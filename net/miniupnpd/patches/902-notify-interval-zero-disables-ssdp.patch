@@ -1,0 +1,24 @@
+--- a/miniupnpd.c	2024-06-23 01:28:05.000000000 +0300
++++ b/miniupnpd.c	2025-08-28 16:58:12.332300682 +0300
+@@ -2242,7 +2242,11 @@
+ 	memset(&v, 0, sizeof(v));
+ 	if(init(argc, argv, &v) != 0)
+ 		return 1;
+-	current_notify_interval = gen_current_notify_interval(v.notify_interval);
++	if (v.notify_interval >0) {
++	   current_notify_interval = gen_current_notify_interval(v.notify_interval);
++	  } else {
++	   current_notify_interval = INT_MAX;
++	  } 
+ #ifdef ENABLE_HTTPS
+ 	if(init_ssl() < 0)
+ 		return 1;
+@@ -2676,7 +2680,7 @@
+ 			/* the comparaison is not very precise but who cares ? */
+ 			if(timeofday.tv_sec >= (lasttimeofday.tv_sec + current_notify_interval))
+ 			{
+-				if (GETFLAG(ENABLEUPNPMASK))
++				if (GETFLAG(ENABLEUPNPMASK)&& (v.notify_interval >0) )
+ 					SendSSDPNotifies2(snotify,
+ 				                  (unsigned short)v.port,
+ #ifdef ENABLE_HTTPS
