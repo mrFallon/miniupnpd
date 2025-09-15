@@ -1,7 +1,7 @@
 # miniupnpd
 patch zero interval upnpd for OpenWRT
 
-# install
+# compile
 git clone https://git.openwrt.org/openwrt/openwrt.git
 
 cd openwrt
